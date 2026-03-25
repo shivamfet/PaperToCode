@@ -17,9 +17,10 @@
   - Files: app/page.tsx, app/components/ApiKeyInput.tsx, app/components/UploadZone.tsx, app/components/GenerateButton.tsx
   - Completed: 2026-03-25 — Three client components with full interactivity: ApiKeyInput (password toggle, sessionStorage persistence), UploadZone (drag-drop, file preview, PDF-only validation, remove), GenerateButton (disabled until both fields filled). 34 unit tests passing (vitest). Semgrep clean.
 
-- [ ] Task 4: Implement PDF text extraction service (P0)
+- [x] Task 4: Implement PDF text extraction service (P0)
   - Acceptance: `extract_text_from_pdf(file_bytes)` returns full text with page markers. Raises ValueError for scanned/image PDFs with no extractable text. Handles large PDFs (50+ pages).
   - Files: backend/services/pdf_extractor.py
+  - Completed: 2026-03-25 — pdfplumber-based extractor with page markers, ValueError for empty/invalid PDFs, 51-page test. 12 backend tests passing (pytest). Semgrep clean, pip-audit clean.
 
 - [ ] Task 5: Implement GPT-5.4 research notebook generation service (P0)
   - Acceptance: `generate_tutorial(pdf_text, api_key)` calls GPT-5.4 with a structured prompt and returns a dict with: title, authors, summary, math_foundations, algorithms (each with pseudocode + implementation + synthetic data), visualizations, ablation_study, exercises, references. Uses `.replace()` for prompt substitution (not `.format()`). Handles API errors gracefully.
