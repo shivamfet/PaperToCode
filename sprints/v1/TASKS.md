@@ -12,9 +12,10 @@
   - Files: backend/main.py, backend/requirements.txt, backend/services/__init__.py
   - Completed: 2026-03-25 — FastAPI 0.135.2 with health endpoint, CORS for localhost:3000, services/ package. 4 tests passing (pytest). pip-audit clean, semgrep clean.
 
-- [ ] Task 3: Build the main UI — API key input, PDF upload zone, generate button (P0)
+- [x] Task 3: Build the main UI — API key input, PDF upload zone, generate button (P0)
   - Acceptance: Page has API key input (stored in sessionStorage, show/hide toggle), drag-drop PDF upload zone with file preview and remove, and a "Generate Notebook" button disabled until both fields are filled. Matches ARC-inspired dark theme.
   - Files: app/page.tsx, app/components/ApiKeyInput.tsx, app/components/UploadZone.tsx, app/components/GenerateButton.tsx
+  - Completed: 2026-03-25 — Three client components with full interactivity: ApiKeyInput (password toggle, sessionStorage persistence), UploadZone (drag-drop, file preview, PDF-only validation, remove), GenerateButton (disabled until both fields filled). 34 unit tests passing (vitest). Semgrep clean.
 
 - [ ] Task 4: Implement PDF text extraction service (P0)
   - Acceptance: `extract_text_from_pdf(file_bytes)` returns full text with page markers. Raises ValueError for scanned/image PDFs with no extractable text. Handles large PDFs (50+ pages).
