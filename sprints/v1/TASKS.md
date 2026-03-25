@@ -7,9 +7,10 @@
   - Files: package.json, tailwind.config.ts, app/layout.tsx, app/page.tsx, app/globals.css
   - Completed: 2026-03-25 — Next.js 14 with React 18, Tailwind 3, ARC dark theme, centered layout. 10 tests passing (vitest). Used yarn due to npm registry access issues.
 
-- [ ] Task 2: Initialize FastAPI backend with project structure and health check (P0)
+- [x] Task 2: Initialize FastAPI backend with project structure and health check (P0)
   - Acceptance: `uvicorn main:app --reload` starts on port 8000. `GET /health` returns `{"status": "ok"}`. CORS configured to allow Next.js dev origin. Directory structure has services/ package.
   - Files: backend/main.py, backend/requirements.txt, backend/services/__init__.py
+  - Completed: 2026-03-25 — FastAPI 0.135.2 with health endpoint, CORS for localhost:3000, services/ package. 4 tests passing (pytest). pip-audit clean, semgrep clean.
 
 - [ ] Task 3: Build the main UI — API key input, PDF upload zone, generate button (P0)
   - Acceptance: Page has API key input (stored in sessionStorage, show/hide toggle), drag-drop PDF upload zone with file preview and remove, and a "Generate Notebook" button disabled until both fields are filled. Matches ARC-inspired dark theme.
