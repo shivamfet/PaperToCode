@@ -22,9 +22,10 @@
   - Files: backend/services/pdf_extractor.py
   - Completed: 2026-03-25 — pdfplumber-based extractor with page markers, ValueError for empty/invalid PDFs, 51-page test. 12 backend tests passing (pytest). Semgrep clean, pip-audit clean.
 
-- [ ] Task 5: Implement GPT-5.4 research notebook generation service (P0)
+- [x] Task 5: Implement GPT-5.4 research notebook generation service (P0)
   - Acceptance: `generate_tutorial(pdf_text, api_key)` calls GPT-5.4 with a structured prompt and returns a dict with: title, authors, summary, math_foundations, algorithms (each with pseudocode + implementation + synthetic data), visualizations, ablation_study, exercises, references. Uses `.replace()` for prompt substitution (not `.format()`). Handles API errors gracefully.
   - Files: backend/services/openai_service.py
+  - Completed: 2026-03-25 — OpenAI service with structured prompt, .replace() templating, JSON parsing (handles markdown fences), validation of required keys, graceful error handling (auth, rate limit, API errors). 13 unit tests passing (pytest). Semgrep clean, pip-audit clean.
 
 - [ ] Task 6: Implement research-grade notebook builder (P0)
   - Acceptance: `build_notebook(tutorial_data)` produces a valid .ipynb with: title cell, executive summary, pip installs, LaTeX math cells, algorithm implementation cells with type hints, synthetic data generation, evaluation + plotting cells, ablation study, exercises, and references. `notebook_to_bytes(nb)` returns UTF-8 JSON bytes. Notebook opens in Colab without errors.
