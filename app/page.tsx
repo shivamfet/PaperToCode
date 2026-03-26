@@ -1,15 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ApiKeyInput } from "./components/ApiKeyInput";
 import { UploadZone } from "./components/UploadZone";
 import { GenerateButton } from "./components/GenerateButton";
+import { StatusFeed } from "./components/StatusFeed";
+import { DownloadSection } from "./components/DownloadSection";
 
 const SESSION_KEY = "openai_api_key";
+const POLL_INTERVAL = 1000;
 
 export default function Home() {
   const [apiKey, setApiKey] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [jobId, setJobId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     const stored = sessionStorage.getItem(SESSION_KEY);
@@ -21,11 +30,82 @@ export default function Home() {
     sessionStorage.setItem(SESSION_KEY, value);
   }
 
-  function handleGenerate() {
-    // Will be implemented in Task 7/8
+  const stopPolling = useCallback(() => {
+    if (pollRef.current) {
+      clearInterval(pollRef.current);
+      pollRef.current = null;
+    }
+  }, []);
+
+  const pollStatus = useCallback(
+    (id: string) => {
+      pollRef.current = setInterval(async () => {
+        try {
+          const resp = await fetch(`/api/status/${id}`);
+          if (!resp.ok) return;
+          const data = await resp.json();
+
+          setMessages(data.messages || []);
+
+          if (data.status === "completed") {
+            stopPolling();
+            setIsGenerating(false);
+            setIsComplete(true);
+          } else if (data.status === "failed") {
+            stopPolling();
+            setIsGenerating(false);
+            const errMsg = data.error?.startsWith("AUTH:")
+              ? "Invalid API key. Please check and try again."
+              : data.error || "Generation failed.";
+            setError(errMsg);
+          }
+        } catch {
+          // Network error — keep polling
+        }
+      }, POLL_INTERVAL);
+    },
+    [stopPolling]
+  );
+
+  useEffect(() => {
+    return () => stopPolling();
+  }, [stopPolling]);
+
+  async function handleGenerate() {
+    if (!file || !apiKey.trim()) return;
+
+    // Reset state
+    setJobId(null);
+    setMessages([]);
+    setError(null);
+    setIsComplete(false);
+    setIsGenerating(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("openai_api_key", apiKey);
+
+      const resp = await fetch("/api/convert", { method: "POST", body: formData });
+
+      if (!resp.ok) {
+        const data = await resp.json().catch(() => ({}));
+        setError(data.detail || "Failed to start conversion.");
+        setIsGenerating(false);
+        return;
+      }
+
+      const { job_id } = await resp.json();
+      setJobId(job_id);
+      setMessages(["Starting conversion..."]);
+      pollStatus(job_id);
+    } catch {
+      setError("Network error. Is the backend running?");
+      setIsGenerating(false);
+    }
   }
 
-  const canGenerate = apiKey.trim().length > 0 && file !== null;
+  const canGenerate = apiKey.trim().length > 0 && file !== null && !isGenerating;
 
   return (
     <div className="space-y-8">
@@ -46,8 +126,19 @@ export default function Home() {
           onFile={setFile}
           onRemove={() => setFile(null)}
         />
-        <GenerateButton disabled={!canGenerate} onClick={handleGenerate} />
+        <GenerateButton
+          disabled={!canGenerate}
+          onClick={handleGenerate}
+        />
       </div>
+
+      {(messages.length > 0 || error) && (
+        <StatusFeed messages={messages} error={error} />
+      )}
+
+      {isComplete && jobId && (
+        <DownloadSection visible={true} jobId={jobId} />
+      )}
     </div>
   );
 }

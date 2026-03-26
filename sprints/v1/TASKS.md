@@ -37,9 +37,10 @@
   - Files: backend/main.py (update), backend/services/job_manager.py
   - Completed: 2026-03-25 — POST /api/convert with background processing, GET /api/status/{job_id} for polling, GET /api/download/{job_id} for notebook download. JobManager tracks status, messages, results, errors. Descriptive status messages throughout pipeline. 20 new tests (9 job_manager unit + 11 integration). Semgrep clean, pip-audit clean.
 
-- [ ] Task 8: Build live status feed and download/Colab UI (P1)
+- [x] Task 8: Build live status feed and download/Colab UI (P1)
   - Acceptance: After clicking Generate, frontend subscribes to SSE and displays status messages in a feed (styled like a terminal log). On completion, shows two buttons: "Download .ipynb" and "Open in Google Colab". Colab button creates a GitHub Gist with the notebook content and opens `colab.research.google.com/gist/...` in a new tab. If Gist creation fails, falls back to download only.
   - Files: app/page.tsx (update), app/components/StatusFeed.tsx, app/components/DownloadSection.tsx
+  - Completed: 2026-03-25 — StatusFeed with terminal-style log, auto-scroll, error display. DownloadSection with download link and Colab gist integration (fallback on failure). page.tsx wired with polling-based status updates, form submission, error handling. 12 new unit tests (6 StatusFeed + 6 DownloadSection). 46 total frontend tests passing. Semgrep clean.
 
 - [ ] Task 9: Configure Next.js proxy to FastAPI and production build (P1)
   - Acceptance: Next.js dev server proxies `/api/*` requests to FastAPI on port 8000. `npm run build` succeeds with no errors. Both servers can be started with a single README command.
