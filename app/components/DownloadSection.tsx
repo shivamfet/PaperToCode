@@ -45,7 +45,7 @@ export function DownloadSection({ visible, jobId }: DownloadSectionProps) {
   }
 
   return (
-    <div data-testid="download-section" className="flex gap-4">
+    <div data-testid="download-section" className="flex flex-col sm:flex-row gap-3 sm:gap-4">
       <a
         data-testid="download-button"
         href={`/api/download/${jobId}`}

@@ -66,7 +66,7 @@ export function UploadZone({ file, onFile, onRemove }: UploadZoneProps) {
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onClick={() => inputRef.current?.click()}
-      className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed px-6 py-10 cursor-pointer transition-colors ${
+      className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 sm:px-6 py-8 sm:py-10 cursor-pointer transition-colors ${
         dragOver
           ? "border-accent bg-surface-hover"
           : "border-border hover:border-muted"

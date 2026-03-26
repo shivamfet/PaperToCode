@@ -1,6 +1,6 @@
 # Sprint v1 — Tasks
 
-## Status: In Progress
+## Status: Complete
 
 - [x] Task 1: Initialize Next.js 14 project with Tailwind CSS and ARC-inspired theme (P0)
   - Acceptance: `npm run dev` starts without errors. Global styles set dark background (#0a0a0a), light text, Inter font, CSS variables for the theme palette. Layout has centered single-column structure with generous whitespace.
@@ -47,6 +47,7 @@
   - Files: next.config.js, README.md (setup instructions)
   - Completed: 2026-03-25 — Next.js rewrites proxy /api/* to FastAPI port 8000. Production build succeeds (2.69 kB page, 89.9 kB first load). README with setup instructions for both servers, test commands, and production build. Semgrep clean.
 
-- [ ] Task 10: Polish UI — responsive layout, error handling, empty states (P2)
+- [x] Task 10: Polish UI — responsive layout, error handling, empty states (P2)
   - Acceptance: Layout works on mobile (375px+). Error messages are clear and specific for every failure mode (bad API key, invalid PDF, network error). Status feed has smooth scroll and auto-scroll to latest message. Loading states on all async operations.
   - Files: app/page.tsx, app/components/*.tsx (various updates)
+  - Completed: 2026-03-25 — Responsive layout (px-4/py-8 mobile, sm breakpoints for desktop). GenerateButton shows "Generating..." loading state. DownloadSection stacks vertically on mobile. Touch-friendly upload zone padding. Specific error messages for network, bad PDF, auth failures. 6 new tests, 52 total frontend tests passing. Semgrep clean, build succeeds.

@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <main className="min-h-screen flex flex-col items-center px-6 py-16">
+        <main className="min-h-screen flex flex-col items-center px-4 sm:px-6 py-8 sm:py-16">
           <div className="w-full max-w-2xl">{children}</div>
         </main>
       </body>
