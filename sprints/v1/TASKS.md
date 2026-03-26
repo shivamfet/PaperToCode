@@ -27,9 +27,10 @@
   - Files: backend/services/openai_service.py
   - Completed: 2026-03-25 — OpenAI service with structured prompt, .replace() templating, JSON parsing (handles markdown fences), validation of required keys, graceful error handling (auth, rate limit, API errors). 13 unit tests passing (pytest). Semgrep clean, pip-audit clean.
 
-- [ ] Task 6: Implement research-grade notebook builder (P0)
+- [x] Task 6: Implement research-grade notebook builder (P0)
   - Acceptance: `build_notebook(tutorial_data)` produces a valid .ipynb with: title cell, executive summary, pip installs, LaTeX math cells, algorithm implementation cells with type hints, synthetic data generation, evaluation + plotting cells, ablation study, exercises, and references. `notebook_to_bytes(nb)` returns UTF-8 JSON bytes. Notebook opens in Colab without errors.
   - Files: backend/services/notebook_builder.py
+  - Completed: 2026-03-25 — nbformat-based builder with all required sections (title, summary, pip installs, math/LaTeX, algorithms with pseudocode+implementation+synthetic data, visualizations, ablation study, exercises, references). notebook_to_bytes returns UTF-8 JSON. 20 unit tests passing (pytest). Semgrep clean, pip-audit clean.
 
 - [ ] Task 7: Create POST /api/convert endpoint with SSE status streaming (P0)
   - Acceptance: POST `/api/convert` with multipart form (file + openai_api_key) processes the PDF and returns a downloadable .ipynb. During processing, SSE events stream to `/api/status/{job_id}` with descriptive messages (e.g. "Extracting text from 24 pages..."). Returns 400 for invalid files, 401 for bad API keys, 500 for failures. Job ID returned immediately so frontend can subscribe to SSE.
