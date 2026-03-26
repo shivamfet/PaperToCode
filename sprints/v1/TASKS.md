@@ -32,9 +32,10 @@
   - Files: backend/services/notebook_builder.py
   - Completed: 2026-03-25 — nbformat-based builder with all required sections (title, summary, pip installs, math/LaTeX, algorithms with pseudocode+implementation+synthetic data, visualizations, ablation study, exercises, references). notebook_to_bytes returns UTF-8 JSON. 20 unit tests passing (pytest). Semgrep clean, pip-audit clean.
 
-- [ ] Task 7: Create POST /api/convert endpoint with SSE status streaming (P0)
+- [x] Task 7: Create POST /api/convert endpoint with SSE status streaming (P0)
   - Acceptance: POST `/api/convert` with multipart form (file + openai_api_key) processes the PDF and returns a downloadable .ipynb. During processing, SSE events stream to `/api/status/{job_id}` with descriptive messages (e.g. "Extracting text from 24 pages..."). Returns 400 for invalid files, 401 for bad API keys, 500 for failures. Job ID returned immediately so frontend can subscribe to SSE.
   - Files: backend/main.py (update), backend/services/job_manager.py
+  - Completed: 2026-03-25 — POST /api/convert with background processing, GET /api/status/{job_id} for polling, GET /api/download/{job_id} for notebook download. JobManager tracks status, messages, results, errors. Descriptive status messages throughout pipeline. 20 new tests (9 job_manager unit + 11 integration). Semgrep clean, pip-audit clean.
 
 - [ ] Task 8: Build live status feed and download/Colab UI (P1)
   - Acceptance: After clicking Generate, frontend subscribes to SSE and displays status messages in a feed (styled like a terminal log). On completion, shows two buttons: "Download .ipynb" and "Open in Google Colab". Colab button creates a GitHub Gist with the notebook content and opens `colab.research.google.com/gist/...` in a new tab. If Gist creation fails, falls back to download only.
