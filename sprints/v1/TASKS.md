@@ -42,9 +42,10 @@
   - Files: app/page.tsx (update), app/components/StatusFeed.tsx, app/components/DownloadSection.tsx
   - Completed: 2026-03-25 — StatusFeed with terminal-style log, auto-scroll, error display. DownloadSection with download link and Colab gist integration (fallback on failure). page.tsx wired with polling-based status updates, form submission, error handling. 12 new unit tests (6 StatusFeed + 6 DownloadSection). 46 total frontend tests passing. Semgrep clean.
 
-- [ ] Task 9: Configure Next.js proxy to FastAPI and production build (P1)
+- [x] Task 9: Configure Next.js proxy to FastAPI and production build (P1)
   - Acceptance: Next.js dev server proxies `/api/*` requests to FastAPI on port 8000. `npm run build` succeeds with no errors. Both servers can be started with a single README command.
   - Files: next.config.js, README.md (setup instructions)
+  - Completed: 2026-03-25 — Next.js rewrites proxy /api/* to FastAPI port 8000. Production build succeeds (2.69 kB page, 89.9 kB first load). README with setup instructions for both servers, test commands, and production build. Semgrep clean.
 
 - [ ] Task 10: Polish UI — responsive layout, error handling, empty states (P2)
   - Acceptance: Layout works on mobile (375px+). Error messages are clear and specific for every failure mode (bad API key, invalid PDF, network error). Status feed has smooth scroll and auto-scroll to latest message. Loading states on all async operations.
