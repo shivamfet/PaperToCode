@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:e2e": "npx playwright test",
+    "test:quality": "npx playwright test e2e/quality.spec.ts --headed --timeout 300000"
   },
   "dependencies": {
     "@types/node": "^25.5.0",
@@ -20,6 +22,7 @@
     "typescript": "5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
