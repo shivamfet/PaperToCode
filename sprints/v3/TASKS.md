@@ -21,9 +21,10 @@
 
 ### CI/CD Pipeline
 
-- [ ] Task 4: GitHub Actions CI pipeline (P0)
+- [x] Task 4: GitHub Actions CI pipeline (P0)
   - Acceptance: `.github/workflows/ci.yml` runs on every push and PR to main. Jobs: (1) backend-tests: install Python deps, run `pytest` (2) frontend-tests: install Node deps, run Playwright E2E in headless mode (3) security-scan: run `semgrep --config auto` on backend/ (4) dependency-audit: run `pip-audit` on requirements.txt. All jobs must pass for PR merge (branch protection rule documented). Jobs run in parallel where possible.
   - Files: .github/workflows/ci.yml
+  - Completed: 2026-03-27 — CI workflow with 4 parallel jobs: backend-tests (pytest), frontend-tests (Playwright E2E), security-scan (semgrep), dependency-audit (pip-audit). Triggers on push/PR to main. Validated with 6 unit tests.
 
 - [ ] Task 5: Connect repo to GitHub and verify CI (P0)
   - Acceptance: Repo pushed to GitHub via `gh` CLI. CI workflow triggers on push. All 4 jobs (pytest, playwright, semgrep, pip-audit) pass green. Branch protection rule set on main requiring CI to pass before merge.

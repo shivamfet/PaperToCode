@@ -30,6 +30,7 @@
     "eslint": "^10.1.0",
     "eslint-config-next": "^16.2.1",
     "jsdom": "^29.0.1",
-    "vitest": "^4.1.1"
+    "vitest": "^4.1.1",
+    "yaml": "^2.8.3"
   }
 }
