@@ -26,16 +26,34 @@ async def health_check():
     return {"status": "ok"}
 
 
+MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 MB
+PDF_MAGIC_BYTES = b"%PDF"
+
+
 @app.post("/api/convert")
 async def convert_pdf(
     file: UploadFile = File(...),
     openai_api_key: str = Form(...),
 ):
-    # Validate file type
+    # Validate file extension
     if not file.filename or not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are accepted.")
 
     file_bytes = await file.read()
+
+    # Validate file size
+    if len(file_bytes) > MAX_FILE_SIZE:
+        raise HTTPException(
+            status_code=413,
+            detail="File too large. Maximum size is 50 MB.",
+        )
+
+    # Validate PDF magic bytes
+    if len(file_bytes) < 4 or not file_bytes[:4].startswith(PDF_MAGIC_BYTES):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid file. Only PDF files are accepted.",
+        )
 
     # Create job and start processing in background
     job_id = job_manager.create_job()
