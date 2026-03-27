@@ -51,7 +51,7 @@ class TestPostConvert:
             response = await client.post(
                 "/api/convert",
                 files={"file": ("paper.pdf", _make_pdf_bytes(), "application/pdf")},
-                data={"openai_api_key": "sk-test-key"},
+                headers={"X-API-Key": "sk-test-key"},
             )
         assert response.status_code == 200
         assert "job_id" in response.json()
@@ -62,19 +62,34 @@ class TestPostConvert:
         async with AsyncClient(transport=transport, base_url="http://test") as client:
             response = await client.post(
                 "/api/convert",
-                data={"openai_api_key": "sk-test-key"},
+                headers={"X-API-Key": "sk-test-key"},
             )
         assert response.status_code == 422
 
     @pytest.mark.anyio
-    async def test_rejects_missing_api_key(self):
+    async def test_rejects_missing_api_key_header(self):
+        """Missing X-API-Key header should return 401."""
         transport = ASGITransport(app=app)
         async with AsyncClient(transport=transport, base_url="http://test") as client:
             response = await client.post(
                 "/api/convert",
                 files={"file": ("paper.pdf", _make_pdf_bytes(), "application/pdf")},
             )
-        assert response.status_code == 422
+        assert response.status_code == 401
+        assert "API key" in response.json()["detail"]
+
+    @pytest.mark.anyio
+    async def test_rejects_empty_api_key_header(self):
+        """Empty X-API-Key header should return 401."""
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.post(
+                "/api/convert",
+                files={"file": ("paper.pdf", _make_pdf_bytes(), "application/pdf")},
+                headers={"X-API-Key": ""},
+            )
+        assert response.status_code == 401
+        assert "API key" in response.json()["detail"]
 
     @pytest.mark.anyio
     async def test_rejects_non_pdf_file(self):
@@ -83,7 +98,7 @@ class TestPostConvert:
             response = await client.post(
                 "/api/convert",
                 files={"file": ("doc.txt", b"not a pdf", "text/plain")},
-                data={"openai_api_key": "sk-test-key"},
+                headers={"X-API-Key": "sk-test-key"},
             )
         assert response.status_code == 400
         assert "PDF" in response.json()["detail"]
@@ -103,7 +118,7 @@ class TestJobLifecycle:
             resp = await client.post(
                 "/api/convert",
                 files={"file": ("paper.pdf", _make_pdf_bytes(), "application/pdf")},
-                data={"openai_api_key": "sk-test"},
+                headers={"X-API-Key": "sk-test"},
             )
             job_id = resp.json()["job_id"]
 
@@ -136,7 +151,7 @@ class TestJobLifecycle:
             resp = await client.post(
                 "/api/convert",
                 files={"file": ("paper.pdf", _make_pdf_bytes(), "application/pdf")},
-                data={"openai_api_key": "sk-bad"},
+                headers={"X-API-Key": "sk-bad"},
             )
             job_id = resp.json()["job_id"]
             await asyncio.sleep(0.5)
@@ -156,7 +171,7 @@ class TestJobLifecycle:
             resp = await client.post(
                 "/api/convert",
                 files={"file": ("paper.pdf", _make_pdf_bytes(), "application/pdf")},
-                data={"openai_api_key": "sk-test"},
+                headers={"X-API-Key": "sk-test"},
             )
             job_id = resp.json()["job_id"]
             await asyncio.sleep(0.5)
@@ -175,7 +190,7 @@ class TestJobLifecycle:
             resp = await client.post(
                 "/api/convert",
                 files={"file": ("paper.pdf", _make_pdf_bytes(), "application/pdf")},
-                data={"openai_api_key": "sk-test"},
+                headers={"X-API-Key": "sk-test"},
             )
             job_id = resp.json()["job_id"]
             await asyncio.sleep(0.5)
@@ -195,7 +210,7 @@ class TestJobLifecycle:
             resp = await client.post(
                 "/api/convert",
                 files={"file": ("paper.pdf", _make_pdf_bytes(), "application/pdf")},
-                data={"openai_api_key": "sk-test"},
+                headers={"X-API-Key": "sk-test"},
             )
             job_id = resp.json()["job_id"]
             await asyncio.sleep(1.0)

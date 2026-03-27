@@ -17,9 +17,10 @@
   - Files: backend/services/job_manager.py, backend/tests/test_job_manager.py (update)
   - Completed: 2026-03-27 — Added created_at timestamp, _cleanup_expired() on create_job(), configurable ttl_seconds (default 1800) and max_jobs (default 100). get_job() also checks TTL. create_job() raises ValueError when limit reached, main.py returns 503. 6 new tests (3 TTL, 3 max limit). 95 total backend tests passing. Semgrep clean, pip-audit clean.
 
-- [ ] Task 4: Move API key from form body to X-API-Key request header (P0)
+- [x] Task 4: Move API key from form body to X-API-Key request header (P0)
   - Acceptance: `POST /api/convert` reads the OpenAI API key from `X-API-Key` header instead of form body field. Frontend sends key via header. Backend returns 401 if header is missing. Old form field `openai_api_key` is no longer accepted. Tests updated for new header-based flow.
   - Files: backend/main.py, app/page.tsx, backend/tests/test_convert_api.py (update)
+  - Completed: 2026-03-27 — Replaced Form(...) with Header(None) for API key. Returns 401 for missing/empty header. Frontend sends via X-API-Key header. All tests updated. 2 new tests (missing header, empty header). 96 backend + 52 frontend tests passing. Semgrep clean, pip-audit clean.
 
 - [ ] Task 5: Add rate limiting middleware with slowapi (P0)
   - Acceptance: `POST /api/convert` limited to 5 requests/minute per IP. `GET /api/status/{job_id}` limited to 30/min per IP. `GET /api/download/{job_id}` limited to 10/min per IP. Returns 429 with `Retry-After` header when exceeded. `GET /health` is not rate-limited. Tests verify rate limit enforcement and 429 response.

@@ -29,7 +29,7 @@ class TestFileSizeValidation:
             response = await client.post(
                 "/api/convert",
                 files={"file": ("big.pdf", oversized, "application/pdf")},
-                data={"openai_api_key": "sk-test"},
+                headers={"X-API-Key": "sk-test"},
             )
         assert response.status_code == 413
         assert "50 MB" in response.json()["detail"]
@@ -43,7 +43,7 @@ class TestFileSizeValidation:
             response = await client.post(
                 "/api/convert",
                 files={"file": ("paper.pdf", pdf_bytes, "application/pdf")},
-                data={"openai_api_key": "sk-test"},
+                headers={"X-API-Key": "sk-test"},
             )
         # Should not be 413 (may be 200 with job_id since the file is valid)
         assert response.status_code != 413
@@ -61,7 +61,7 @@ class TestMagicBytesValidation:
             response = await client.post(
                 "/api/convert",
                 files={"file": ("sneaky.pdf", fake_pdf, "application/pdf")},
-                data={"openai_api_key": "sk-test"},
+                headers={"X-API-Key": "sk-test"},
             )
         assert response.status_code == 400
         assert "PDF" in response.json()["detail"]
@@ -74,7 +74,7 @@ class TestMagicBytesValidation:
             response = await client.post(
                 "/api/convert",
                 files={"file": ("notes.txt", b"just text", "text/plain")},
-                data={"openai_api_key": "sk-test"},
+                headers={"X-API-Key": "sk-test"},
             )
         assert response.status_code == 400
         assert "PDF" in response.json()["detail"]
@@ -88,7 +88,7 @@ class TestMagicBytesValidation:
             response = await client.post(
                 "/api/convert",
                 files={"file": ("paper.pdf", pdf_bytes, "application/pdf")},
-                data={"openai_api_key": "sk-test"},
+                headers={"X-API-Key": "sk-test"},
             )
         # Should pass validation (200 with job_id)
         assert response.status_code == 200
@@ -104,7 +104,7 @@ class TestMagicBytesValidation:
             response = await client.post(
                 "/api/convert",
                 files={"file": ("archive.pdf", zip_bytes, "application/pdf")},
-                data={"openai_api_key": "sk-test"},
+                headers={"X-API-Key": "sk-test"},
             )
         assert response.status_code == 400
         assert "PDF" in response.json()["detail"]
@@ -117,7 +117,7 @@ class TestMagicBytesValidation:
             response = await client.post(
                 "/api/convert",
                 files={"file": ("empty.pdf", b"", "application/pdf")},
-                data={"openai_api_key": "sk-test"},
+                headers={"X-API-Key": "sk-test"},
             )
         assert response.status_code == 400
         assert "PDF" in response.json()["detail"]

@@ -1,5 +1,5 @@
 import asyncio
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, Header, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 
@@ -34,8 +34,15 @@ PDF_MAGIC_BYTES = b"%PDF"
 @app.post("/api/convert")
 async def convert_pdf(
     file: UploadFile = File(...),
-    openai_api_key: str = Form(...),
+    x_api_key: str | None = Header(None),
 ):
+    # Validate API key header
+    if not x_api_key or not x_api_key.strip():
+        raise HTTPException(
+            status_code=401,
+            detail="Missing API key. Provide it via the X-API-Key header.",
+        )
+
     # Validate file extension
     if not file.filename or not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are accepted.")
@@ -63,7 +70,7 @@ async def convert_pdf(
         raise HTTPException(status_code=503, detail=str(e))
 
     asyncio.get_event_loop().run_in_executor(
-        None, _process_job, job_id, file_bytes, openai_api_key
+        None, _process_job, job_id, file_bytes, x_api_key
     )
 
     return {"job_id": job_id}

@@ -84,9 +84,12 @@ export default function Home() {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("openai_api_key", apiKey);
 
-      const resp = await fetch("/api/convert", { method: "POST", body: formData });
+      const resp = await fetch("/api/convert", {
+        method: "POST",
+        headers: { "X-API-Key": apiKey },
+        body: formData,
+      });
 
       if (!resp.ok) {
         const data = await resp.json().catch(() => ({}));
