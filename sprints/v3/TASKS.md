@@ -26,9 +26,10 @@
   - Files: .github/workflows/ci.yml
   - Completed: 2026-03-27 — CI workflow with 4 parallel jobs: backend-tests (pytest), frontend-tests (Playwright E2E), security-scan (semgrep), dependency-audit (pip-audit). Triggers on push/PR to main. Validated with 6 unit tests.
 
-- [ ] Task 5: Connect repo to GitHub and verify CI (P0)
+- [x] Task 5: Connect repo to GitHub and verify CI (P0)
   - Acceptance: Repo pushed to GitHub via `gh` CLI. CI workflow triggers on push. All 4 jobs (pytest, playwright, semgrep, pip-audit) pass green. Branch protection rule set on main requiring CI to pass before merge.
   - Files: (no new files — CLI operations only)
+  - Completed: 2026-03-27 — Repo pushed to github.com/shivamfet/PaperToCode. Fixed CI: added python-multipart==0.0.22 to requirements.txt (CVE-2026-24486 fix), added Python setup to frontend-tests job for webServer. All 4 CI jobs passing.
 
 ### Docker
 
