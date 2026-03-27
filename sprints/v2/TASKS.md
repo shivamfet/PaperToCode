@@ -27,9 +27,10 @@
   - Files: backend/main.py, backend/requirements.txt (add slowapi), backend/tests/test_rate_limiting.py
   - Completed: 2026-03-27 — slowapi 0.1.9 with per-endpoint rate limits: /api/convert 5/min, /api/status 30/min, /api/download 10/min. /health not limited. conftest.py resets limiter between tests. 4 new tests. 100 total backend tests passing. Semgrep clean, pip-audit clean.
 
-- [ ] Task 6: Add security headers middleware (P1)
+- [x] Task 6: Add security headers middleware (P1)
   - Acceptance: All responses include: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection: 1; mode=block`, `Referrer-Policy: strict-origin-when-cross-origin`, `Content-Security-Policy: default-src 'self'`. Headers verified in tests on health, status, and download endpoints.
   - Files: backend/main.py, backend/tests/test_security_headers.py
+  - Completed: 2026-03-27 — SecurityHeadersMiddleware adds 5 headers to all responses. 3 new tests verifying headers on health, status, and download endpoints. 103 total backend tests passing. Semgrep clean, pip-audit clean.
 
 - [ ] Task 7: Tighten CORS configuration (P1)
   - Acceptance: CORS allows only `GET` and `POST` methods (not PUT, DELETE, PATCH). Allowed headers restricted to `Content-Type`, `X-API-Key`, and standard headers. `allow_credentials` is False. Tests verify disallowed methods get proper CORS rejection.
