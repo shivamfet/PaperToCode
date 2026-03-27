@@ -1,6 +1,6 @@
 # Sprint v2 — Tasks
 
-## Status: In Progress
+## Status: Complete
 
 - [x] Task 1: Add file size and MIME type validation to POST /api/convert (P0)
   - Acceptance: Backend rejects files > 50 MB with 413 status and clear error message. Backend rejects non-PDF files by checking magic bytes (`%PDF` header), not just Content-Type. Returns 400 for invalid file types. Tests cover oversized file, non-PDF file, and valid PDF.
@@ -47,6 +47,7 @@
   - Files: backend/tests/test_security_integration.py
   - Completed: 2026-03-27 — 7 integration tests covering all security scenarios: 413 oversized, sanitizer strips injection before GPT, 429 rate limit, 404 expired job, 503 max jobs, 401 missing key, CORS DELETE rejection. 121 total backend tests passing. Semgrep clean, pip-audit clean.
 
-- [ ] Task 10: Update frontend error handling for new security responses (P2)
+- [x] Task 10: Update frontend error handling for new security responses (P2)
   - Acceptance: Frontend handles 413 (file too large), 429 (rate limited — shows retry message), 503 (server busy). Error messages are user-friendly and specific. Tests verify error message display for each new status code.
   - Files: app/page.tsx, tests/unit/security-errors.test.tsx
+  - Completed: 2026-03-27 — Specific user-friendly messages for 413 ("File too large"), 429 ("Too many requests. Please try again in a minute."), 503 ("Server is busy. Please try again shortly."). 3 new tests. 55 total frontend tests passing. Semgrep clean.

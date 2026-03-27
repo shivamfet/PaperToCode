@@ -93,7 +93,15 @@ export default function Home() {
 
       if (!resp.ok) {
         const data = await resp.json().catch(() => ({}));
-        setError(data.detail || "Failed to start conversion.");
+        let errMsg = data.detail || "Failed to start conversion.";
+        if (resp.status === 413) {
+          errMsg = "File too large. Maximum size is 50 MB.";
+        } else if (resp.status === 429) {
+          errMsg = "Too many requests. Please try again in a minute.";
+        } else if (resp.status === 503) {
+          errMsg = "Server is busy. Please try again shortly.";
+        }
+        setError(errMsg);
         setIsGenerating(false);
         return;
       }
