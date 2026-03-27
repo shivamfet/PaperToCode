@@ -42,9 +42,10 @@
   - Files: backend/middleware/request_logger.py, backend/main.py (register middleware), backend/tests/test_request_logger.py
   - Completed: 2026-03-27 — RequestLoggerMiddleware logs structured JSON (timestamp, method, path, status_code, client_ip, duration_ms). No sensitive data logged. 4 new tests (2 format, 2 exclusion). 114 total backend tests passing. Semgrep clean, pip-audit clean.
 
-- [ ] Task 9: Add backend integration test suite for security scenarios (P2)
+- [x] Task 9: Add backend integration test suite for security scenarios (P2)
   - Acceptance: End-to-end tests covering: oversized file rejection, prompt injection in PDF text is sanitized, rate limit triggers 429, expired job returns 404, max jobs returns 503, missing API key header returns 401, CORS preflight for disallowed method. All tests pass. Existing tests still pass.
   - Files: backend/tests/test_security_integration.py
+  - Completed: 2026-03-27 — 7 integration tests covering all security scenarios: 413 oversized, sanitizer strips injection before GPT, 429 rate limit, 404 expired job, 503 max jobs, 401 missing key, CORS DELETE rejection. 121 total backend tests passing. Semgrep clean, pip-audit clean.
 
 - [ ] Task 10: Update frontend error handling for new security responses (P2)
   - Acceptance: Frontend handles 413 (file too large), 429 (rate limited — shows retry message), 503 (server busy). Error messages are user-friendly and specific. Tests verify error message display for each new status code.
