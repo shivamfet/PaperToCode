@@ -57,7 +57,10 @@ async def convert_pdf(
         )
 
     # Create job and start processing in background
-    job_id = job_manager.create_job()
+    try:
+        job_id = job_manager.create_job()
+    except ValueError as e:
+        raise HTTPException(status_code=503, detail=str(e))
 
     asyncio.get_event_loop().run_in_executor(
         None, _process_job, job_id, file_bytes, openai_api_key

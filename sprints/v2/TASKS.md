@@ -12,9 +12,10 @@
   - Files: backend/services/text_sanitizer.py, backend/tests/test_text_sanitizer.py, backend/main.py (update pipeline)
   - Completed: 2026-03-27 — Regex-based sanitizer strips 7 injection patterns (role injection, instruction override, you-are-now), HTML/Markdown injection (script, iframe, image), and collapses excessive whitespace. Wired into convert pipeline after text extraction. 17 new tests. 89 total backend tests passing. Semgrep clean, pip-audit clean.
 
-- [ ] Task 3: Add TTL-based job cleanup and max job limit to JobManager (P0)
+- [x] Task 3: Add TTL-based job cleanup and max job limit to JobManager (P0)
   - Acceptance: Jobs older than 30 minutes are automatically purged. Maximum 100 concurrent jobs enforced — returns 503 when limit reached. Cleanup runs on each `create_job()` call (no background thread needed). Tests verify TTL expiry, max job rejection, and cleanup of completed jobs.
   - Files: backend/services/job_manager.py, backend/tests/test_job_manager.py (update)
+  - Completed: 2026-03-27 — Added created_at timestamp, _cleanup_expired() on create_job(), configurable ttl_seconds (default 1800) and max_jobs (default 100). get_job() also checks TTL. create_job() raises ValueError when limit reached, main.py returns 503. 6 new tests (3 TTL, 3 max limit). 95 total backend tests passing. Semgrep clean, pip-audit clean.
 
 - [ ] Task 4: Move API key from form body to X-API-Key request header (P0)
   - Acceptance: `POST /api/convert` reads the OpenAI API key from `X-API-Key` header instead of form body field. Frontend sends key via header. Backend returns 401 if header is missing. Old form field `openai_api_key` is no longer accepted. Tests updated for new header-based flow.
