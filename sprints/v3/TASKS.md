@@ -14,9 +14,10 @@
   - Files: e2e/generate-flow.spec.ts, e2e/fixtures/ (test PDF)
   - Completed: 2026-03-27 — 5 E2E tests covering happy path (full flow with 6 screenshots) and error paths (missing API key, invalid file, 401, 429). 10 screenshots total. Mocked backend via Playwright route interception.
 
-- [ ] Task 3: Real quality test — visible browser, real API call, notebook validation (P0)
+- [x] Task 3: Real quality test — visible browser, real API call, notebook validation (P0)
   - Acceptance: A Playwright test that runs in **headed** mode (visible browser). Opens the app, pauses with a dialog prompting the user to enter their OpenAI API key, uploads "Attention Is All You Need" PDF from disk, clicks Generate, waits for completion (up to 5 minutes timeout). After download: validates notebook is valid JSON, has 8+ sections (cells), contains valid Python code cells, includes a safety/disclaimer cell. Screenshots saved at each step as proof. Test is run manually via `npm run test:quality` (not in CI).
   - Files: e2e/quality.spec.ts, package.json (add test:quality script)
+  - Completed: 2026-03-27 — Quality test with headed browser, user prompt for API key, real PDF upload, 5-minute timeout, notebook validation (JSON, 8+ cells, code cells, disclaimer). 7 screenshots. PDF path configurable via QUALITY_TEST_PDF env var. test:e2e updated to exclude quality test.
 
 ### CI/CD Pipeline
 

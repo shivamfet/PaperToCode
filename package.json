@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:e2e": "npx playwright test",
+    "test:e2e": "npx playwright test e2e/smoke.spec.ts e2e/generate-flow.spec.ts",
     "test:quality": "npx playwright test e2e/quality.spec.ts --headed --timeout 300000"
   },
   "dependencies": {
