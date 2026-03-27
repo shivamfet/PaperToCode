@@ -9,9 +9,10 @@
   - Files: package.json, playwright.config.ts, e2e/smoke.spec.ts
   - Completed: 2026-03-27 — Playwright 1.58.2 + Chromium installed. Config with webServer for both backend (port 8000) and frontend (port 3000). 2 smoke tests (homepage elements + backend health). `test:e2e` and `test:quality` scripts added. Semgrep clean, pip-audit clean.
 
-- [ ] Task 2: E2E Playwright tests — full user flow with screenshots (P0)
+- [x] Task 2: E2E Playwright tests — full user flow with screenshots (P0)
   - Acceptance: Test exercises the complete flow: enter API key (mocked backend), upload PDF, click Generate, see status messages in StatusFeed, see DownloadSection appear. Screenshots captured at each step (key entered, file uploaded, generating, complete). Tests run headless in CI, produce screenshot artifacts. Covers error paths: missing API key, invalid file type.
   - Files: e2e/generate-flow.spec.ts, e2e/fixtures/ (test PDF)
+  - Completed: 2026-03-27 — 5 E2E tests covering happy path (full flow with 6 screenshots) and error paths (missing API key, invalid file, 401, 429). 10 screenshots total. Mocked backend via Playwright route interception.
 
 - [ ] Task 3: Real quality test — visible browser, real API call, notebook validation (P0)
   - Acceptance: A Playwright test that runs in **headed** mode (visible browser). Opens the app, pauses with a dialog prompting the user to enter their OpenAI API key, uploads "Attention Is All You Need" PDF from disk, clicks Generate, waits for completion (up to 5 minutes timeout). After download: validates notebook is valid JSON, has 8+ sections (cells), contains valid Python code cells, includes a safety/disclaimer cell. Screenshots saved at each step as proof. Test is run manually via `npm run test:quality` (not in CI).
