@@ -37,9 +37,10 @@
   - Files: backend/main.py, backend/tests/test_cors.py
   - Completed: 2026-03-27 — allow_methods locked to GET/POST, allow_headers to Content-Type/X-API-Key, allow_credentials set to False. 7 new tests (4 methods, 2 headers, 1 credentials). 110 total backend tests passing. Semgrep clean, pip-audit clean.
 
-- [ ] Task 8: Add request logging middleware for security monitoring (P1)
+- [x] Task 8: Add request logging middleware for security monitoring (P1)
   - Acceptance: All requests logged with: timestamp, method, path, status code, client IP, response time in ms. Logs written to stdout in structured JSON format. API keys and request bodies are NOT logged. Tests verify log output format and that sensitive data is excluded.
   - Files: backend/middleware/request_logger.py, backend/main.py (register middleware), backend/tests/test_request_logger.py
+  - Completed: 2026-03-27 — RequestLoggerMiddleware logs structured JSON (timestamp, method, path, status_code, client_ip, duration_ms). No sensitive data logged. 4 new tests (2 format, 2 exclusion). 114 total backend tests passing. Semgrep clean, pip-audit clean.
 
 - [ ] Task 9: Add backend integration test suite for security scenarios (P2)
   - Acceptance: End-to-end tests covering: oversized file rejection, prompt injection in PDF text is sanitized, rate limit triggers 429, expired job returns 404, max jobs returns 503, missing API key header returns 401, CORS preflight for disallowed method. All tests pass. Existing tests still pass.

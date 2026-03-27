@@ -7,6 +7,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
+from middleware.request_logger import RequestLoggerMiddleware
 from services.job_manager import JobManager, JobStatus
 from services.notebook_builder import build_notebook, notebook_to_bytes
 from services.openai_service import generate_tutorial
@@ -36,6 +37,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         return response
 
 
+app.add_middleware(RequestLoggerMiddleware)
 app.add_middleware(SecurityHeadersMiddleware)
 
 app.add_middleware(
