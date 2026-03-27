@@ -7,6 +7,7 @@ from services.job_manager import JobManager, JobStatus
 from services.notebook_builder import build_notebook, notebook_to_bytes
 from services.openai_service import generate_tutorial
 from services.pdf_extractor import extract_text_from_pdf
+from services.text_sanitizer import sanitize_pdf_text
 
 app = FastAPI(title="PaperToCode API")
 
@@ -80,6 +81,9 @@ def _process_job(job_id: str, file_bytes: bytes, api_key: str) -> None:
 
         page_count = pdf_text.count("--- Page ")
         job_manager.add_message(job_id, f"Extracted text from {page_count} pages.")
+
+        # Step 1b: Sanitize text to mitigate prompt injection
+        pdf_text = sanitize_pdf_text(pdf_text)
 
         # Step 2: Generate tutorial
         job_manager.add_message(job_id, "Analyzing paper with GPT-5.4...")

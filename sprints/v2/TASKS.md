@@ -7,9 +7,10 @@
   - Files: backend/main.py, backend/tests/test_input_validation.py
   - Completed: 2026-03-27 — Added MAX_FILE_SIZE (50 MB) check returning 413, PDF magic bytes validation returning 400. 7 new tests (2 size, 5 MIME). 72 total backend tests passing. Semgrep clean, pip-audit clean.
 
-- [ ] Task 2: Implement PDF text sanitizer to mitigate prompt injection (P0)
+- [x] Task 2: Implement PDF text sanitizer to mitigate prompt injection (P0)
   - Acceptance: `sanitize_pdf_text(text)` strips common prompt injection patterns: "ignore previous instructions", "system:", "assistant:", markdown/HTML injection sequences, and excessive whitespace. Sanitizer is called in the convert pipeline before text is sent to GPT-5.4. Tests cover at least 5 injection patterns and verify clean text passes through unchanged.
   - Files: backend/services/text_sanitizer.py, backend/tests/test_text_sanitizer.py, backend/main.py (update pipeline)
+  - Completed: 2026-03-27 — Regex-based sanitizer strips 7 injection patterns (role injection, instruction override, you-are-now), HTML/Markdown injection (script, iframe, image), and collapses excessive whitespace. Wired into convert pipeline after text extraction. 17 new tests. 89 total backend tests passing. Semgrep clean, pip-audit clean.
 
 - [ ] Task 3: Add TTL-based job cleanup and max job limit to JobManager (P0)
   - Acceptance: Jobs older than 30 minutes are automatically purged. Maximum 100 concurrent jobs enforced — returns 503 when limit reached. Cleanup runs on each `create_job()` call (no background thread needed). Tests verify TTL expiry, max job rejection, and cleanup of completed jobs.
