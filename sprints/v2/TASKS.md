@@ -32,9 +32,10 @@
   - Files: backend/main.py, backend/tests/test_security_headers.py
   - Completed: 2026-03-27 — SecurityHeadersMiddleware adds 5 headers to all responses. 3 new tests verifying headers on health, status, and download endpoints. 103 total backend tests passing. Semgrep clean, pip-audit clean.
 
-- [ ] Task 7: Tighten CORS configuration (P1)
+- [x] Task 7: Tighten CORS configuration (P1)
   - Acceptance: CORS allows only `GET` and `POST` methods (not PUT, DELETE, PATCH). Allowed headers restricted to `Content-Type`, `X-API-Key`, and standard headers. `allow_credentials` is False. Tests verify disallowed methods get proper CORS rejection.
   - Files: backend/main.py, backend/tests/test_cors.py
+  - Completed: 2026-03-27 — allow_methods locked to GET/POST, allow_headers to Content-Type/X-API-Key, allow_credentials set to False. 7 new tests (4 methods, 2 headers, 1 credentials). 110 total backend tests passing. Semgrep clean, pip-audit clean.
 
 - [ ] Task 8: Add request logging middleware for security monitoring (P1)
   - Acceptance: All requests logged with: timestamp, method, path, status code, client IP, response time in ms. Logs written to stdout in structured JSON format. API keys and request bodies are NOT logged. Tests verify log output format and that sensitive data is excluded.
