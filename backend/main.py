@@ -1,7 +1,10 @@
 import asyncio
-from fastapi import FastAPI, File, Header, HTTPException, UploadFile
+from fastapi import FastAPI, File, Header, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 from services.job_manager import JobManager, JobStatus
 from services.notebook_builder import build_notebook, notebook_to_bytes
@@ -9,7 +12,11 @@ from services.openai_service import generate_tutorial
 from services.pdf_extractor import extract_text_from_pdf
 from services.text_sanitizer import sanitize_pdf_text
 
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI(title="PaperToCode API")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
@@ -32,7 +39,9 @@ PDF_MAGIC_BYTES = b"%PDF"
 
 
 @app.post("/api/convert")
+@limiter.limit("5/minute")
 async def convert_pdf(
+    request: Request,
     file: UploadFile = File(...),
     x_api_key: str | None = Header(None),
 ):
@@ -131,7 +140,8 @@ def _process_job(job_id: str, file_bytes: bytes, api_key: str) -> None:
 
 
 @app.get("/api/status/{job_id}")
-async def get_status(job_id: str):
+@limiter.limit("30/minute")
+async def get_status(request: Request, job_id: str):
     job = job_manager.get_job(job_id)
     if job is None:
         raise HTTPException(status_code=404, detail="Job not found.")
@@ -145,7 +155,8 @@ async def get_status(job_id: str):
 
 
 @app.get("/api/download/{job_id}")
-async def download_notebook(job_id: str):
+@limiter.limit("10/minute")
+async def download_notebook(request: Request, job_id: str):
     job = job_manager.get_job(job_id)
     if job is None:
         raise HTTPException(status_code=404, detail="Job not found.")

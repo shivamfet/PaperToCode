@@ -22,9 +22,10 @@
   - Files: backend/main.py, app/page.tsx, backend/tests/test_convert_api.py (update)
   - Completed: 2026-03-27 — Replaced Form(...) with Header(None) for API key. Returns 401 for missing/empty header. Frontend sends via X-API-Key header. All tests updated. 2 new tests (missing header, empty header). 96 backend + 52 frontend tests passing. Semgrep clean, pip-audit clean.
 
-- [ ] Task 5: Add rate limiting middleware with slowapi (P0)
+- [x] Task 5: Add rate limiting middleware with slowapi (P0)
   - Acceptance: `POST /api/convert` limited to 5 requests/minute per IP. `GET /api/status/{job_id}` limited to 30/min per IP. `GET /api/download/{job_id}` limited to 10/min per IP. Returns 429 with `Retry-After` header when exceeded. `GET /health` is not rate-limited. Tests verify rate limit enforcement and 429 response.
   - Files: backend/main.py, backend/requirements.txt (add slowapi), backend/tests/test_rate_limiting.py
+  - Completed: 2026-03-27 — slowapi 0.1.9 with per-endpoint rate limits: /api/convert 5/min, /api/status 30/min, /api/download 10/min. /health not limited. conftest.py resets limiter between tests. 4 new tests. 100 total backend tests passing. Semgrep clean, pip-audit clean.
 
 - [ ] Task 6: Add security headers middleware (P1)
   - Acceptance: All responses include: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection: 1; mode=block`, `Referrer-Policy: strict-origin-when-cross-origin`, `Content-Security-Policy: default-src 'self'`. Headers verified in tests on health, status, and download endpoints.
